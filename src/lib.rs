@@ -68,7 +68,7 @@ macro_rules! impl_is_prime {
 
 impl_is_prime!(u8, u8, [2, 7, 61]);
 impl_is_prime!(u16, u16, [2, 7, 61]);
-impl_is_prime!(u32, u32, [2, 379215, 457083754]);
+impl_is_prime!(u32, u32, [2, 7, 61]);
 impl_is_prime!(u64, u64, [2, 325, 9375, 28178, 450775, 9780504, 1795265022]);
 #[cfg(target_pointer_width = "64")]
 impl_is_prime!(
@@ -77,7 +77,7 @@ impl_is_prime!(
     [2, 325, 9375, 28178, 450775, 9780504, 1795265022]
 );
 #[cfg(target_pointer_width = "32")]
-impl_is_prime!(usize, u32, [2, 379215, 457083754]);
+impl_is_prime!(usize, u32, [2, 7, 61]);
 
 #[cfg(test)]
 mod tests {
