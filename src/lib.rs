@@ -7,8 +7,10 @@
 //! [Deterministic variants of the Miller-Rabin primality test](https://miller-rabin.appspot.com/)
 
 mod montgomery;
+mod sieve;
 
 use montgomery::Montgomery;
+pub use sieve::LinearSieve;
 
 pub trait IsPrime {
     fn is_prime(&self) -> bool;
