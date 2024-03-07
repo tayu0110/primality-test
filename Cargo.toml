@@ -1,11 +1,12 @@
 [package]
 name = "primality-test"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 authors = ["tayu0110"]
 license = "MIT"
 repository = "https://github.com/tayu0110/primality-test.git"
 description = "Primality Test crate"
+keywords = ["primality test", "prime number", "miller-rabin"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
