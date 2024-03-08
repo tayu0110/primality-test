@@ -12,6 +12,8 @@ mod sieve;
 use montgomery::Montgomery;
 pub use sieve::LinearSieve;
 
+const SMALL_PRIMES_MEMO: LinearSieve<255> = LinearSieve::new();
+
 pub trait IsPrime {
     fn is_prime(&self) -> bool;
 }
@@ -38,6 +40,14 @@ macro_rules! impl_is_prime {
                     return p == 2;
                 }
 
+                if <$witness_ty>::BITS == 64 && (p as u64) < 1795265022 {
+                    return (p as u32).is_prime();
+                }
+
+                if p < SMALL_PRIMES_MEMO.len() as $witness_ty {
+                    return SMALL_PRIMES_MEMO.is_prime(p as usize);
+                }
+
                 let mont = Montgomery::<$witness_ty>::new(p);
 
                 let s = (p - 1).trailing_zeros();
@@ -45,9 +55,12 @@ macro_rules! impl_is_prime {
 
                 [$( $witness ),*]
                     .iter()
-                    .map(|&a| a % p)
-                    .filter(|&a| a != 0)
-                    .all(|a| {
+                    // These two lines are necessary if any of the witnesses may be greater than or equal to `p`.
+                    // The maximum witness for upto 32-bit integers is 61, and when `p` <= 61, this line is unreachable because they dictionary SMALL_PRIMES_MEMO.
+                    // The maximum witness for 64-bit integers is 1795265022, but since numbers less than this can be expressed in 32 bits, they are cast to u32 and judged again, so this point is unreachable.
+                    // .map(|&a| a % p)
+                    // .filter(|&a| a != 0)
+                    .all(|&a| {
                         let a = mont.convert(a);
                         let at = mont.pow(a, t);
                         // a^t = 1 (mod p) or a^t = -1 (mod p)
@@ -88,7 +101,7 @@ mod tests {
     #[rustfmt::skip]
     const PRIME: &[u64] = &[
         2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 47, 53, 59, 61, 67, 73, 79, 83, 89, 97,
-        998244353, 1000000007,
+        998244353, 1000000007, 67280421310721, 999999999999999989
     ];
 
     const NO_PRIME: &[u64] = &[
