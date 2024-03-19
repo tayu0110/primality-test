@@ -6,9 +6,11 @@
 //!
 //! [Deterministic variants of the Miller-Rabin primality test](https://miller-rabin.appspot.com/)
 
+mod constfn;
 mod montgomery;
 mod sieve;
 
+pub use constfn::is_prime;
 use montgomery::Montgomery;
 pub use sieve::LinearSieve;
 
