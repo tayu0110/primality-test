@@ -143,6 +143,12 @@ impl<const LEN: usize> IntoIterator for LinearSieve<LEN> {
     }
 }
 
+impl<const LEN: usize> Default for LinearSieve<LEN> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::ops::Mul;
